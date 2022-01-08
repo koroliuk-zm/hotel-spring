@@ -53,8 +53,6 @@ public class UserDTOValidator implements Validator {
             errors.rejectValue("password", "password.regex");
         }
         if (!userDTO.getPassword().equals(userDTO.getPasswordConfirm())) {
-        	System.out.println(userDTO.getPassword());
-        	System.out.println(userDTO.getPasswordConfirm());
             errors.rejectValue("passwordConfirm", "password.equals");
         }
     }

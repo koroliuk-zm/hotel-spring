@@ -1,6 +1,8 @@
 package com.dkoroliuk.hotel_spring.util;
 
 public class Path {
+	private Path() {
+	}
 	public static final String WELCOME_PAGE = "/index";
 	public static final String ERROR_PAGE = "/error";
 	public static final String LOGIN_PAGE = "/login";

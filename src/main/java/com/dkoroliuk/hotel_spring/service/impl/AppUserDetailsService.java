@@ -12,9 +12,6 @@ import com.dkoroliuk.hotel_spring.entity.AppUserDetails;
 import com.dkoroliuk.hotel_spring.entity.User;
 import com.dkoroliuk.hotel_spring.repository.UserRepo;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 	@Autowired
