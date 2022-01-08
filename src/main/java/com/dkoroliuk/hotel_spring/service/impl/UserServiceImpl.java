@@ -12,11 +12,14 @@ import com.dkoroliuk.hotel_spring.repository.UserRepo;
 import com.dkoroliuk.hotel_spring.service.UserService;
 import com.dkoroliuk.hotel_spring.util.DTOHelper;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 
+@NoArgsConstructor
+@AllArgsConstructor(onConstructor_ = {@Autowired})
 @Service
 public class UserServiceImpl implements UserService {
-	@Autowired
 	private UserRepo userRepo;
 	private PasswordEncoder passwordEncoder;
 	

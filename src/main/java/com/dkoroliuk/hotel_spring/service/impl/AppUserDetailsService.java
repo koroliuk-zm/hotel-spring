@@ -24,6 +24,6 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepo.findUserByLogin(username);
         return user.map(AppUserDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException("No such user ass " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("No such user as " + username));
     }
 }

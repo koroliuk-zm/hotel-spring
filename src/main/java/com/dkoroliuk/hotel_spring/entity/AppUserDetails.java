@@ -23,7 +23,7 @@ public class AppUserDetails implements UserDetails {
         login = user.getLogin();
         password = user.getPassword();
         isEnable = user.isEnable();
-        authorities = new ArrayList<GrantedAuthority>();
+        authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserRole().getRole().toUpperCase()));
     }
 

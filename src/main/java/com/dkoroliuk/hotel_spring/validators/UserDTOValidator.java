@@ -11,7 +11,7 @@ import com.dkoroliuk.hotel_spring.dto.UserDTO;
 public class UserDTOValidator implements Validator {
     private static final String LOGIN_REGEX = "^[A-Za-z0-9]{1,20}$";
     private static final String PASSWORD_REGEX = "^[A-Za-z0-9]{6,}$";
-    private static final String EMAIL_REGEX = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+    private static final String EMAIL_REGEX = "^[\\w\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
     /**
      * Method to check if given class supports by this validator
@@ -42,9 +42,9 @@ public class UserDTOValidator implements Validator {
             if (!userDTO.getPassword().isEmpty()) {
                 validatePasswords(errors, userDTO);
             }
-            if (!userDTO.getEmail().matches(EMAIL_REGEX)) {
-                errors.rejectValue("email", "email.regex");
-            }
+        }
+        if (!userDTO.getEmail().matches(EMAIL_REGEX)) {
+            errors.rejectValue("email", "email.regex");
         }
     }
 
@@ -53,6 +53,8 @@ public class UserDTOValidator implements Validator {
             errors.rejectValue("password", "password.regex");
         }
         if (!userDTO.getPassword().equals(userDTO.getPasswordConfirm())) {
+        	System.out.println(userDTO.getPassword());
+        	System.out.println(userDTO.getPasswordConfirm());
             errors.rejectValue("passwordConfirm", "password.equals");
         }
     }

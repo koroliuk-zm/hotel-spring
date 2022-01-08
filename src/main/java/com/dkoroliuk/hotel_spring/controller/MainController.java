@@ -20,9 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 
-/**
- * Controller for guest.
- */
 @NoArgsConstructor
 @AllArgsConstructor(onConstructor_ = {@Autowired})
 @Controller
