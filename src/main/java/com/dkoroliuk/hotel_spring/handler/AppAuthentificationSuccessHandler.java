@@ -41,12 +41,13 @@ public class AppAuthentificationSuccessHandler implements AuthenticationSuccessH
 
     protected String determineTargetUrl(final Authentication authentication) {
         Map<String, String> roleTargetUrl = new HashMap<>();
-        roleTargetUrl.put("USER", "/user/rooms");
-        roleTargetUrl.put("ADMIN", "/administrator");
-        roleTargetUrl.put("WAITER", "/waiter");
+        roleTargetUrl.put("ROLE_USER", "/user/rooms");
+        roleTargetUrl.put("ROLE_ADMIN", "/admin");
+        roleTargetUrl.put("ROLE_WAITER", "/waiter");
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {
             String authorityName = grantedAuthority.getAuthority();
+            System.out.println(authorityName);
             if(roleTargetUrl.containsKey(authorityName)) {
                 return roleTargetUrl.get(authorityName);
             }

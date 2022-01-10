@@ -64,11 +64,11 @@ public class AppErrorController implements ErrorController {
         }
         Collection<? extends GrantedAuthority> authorities = ((UserDetails) principal).getAuthorities();
         String authority = authorities.toString();
-        if (authority.contains("ADMIN")) {
+        if (authority.contains("ROLE_ADMIN")) {
             path = Path.ADMIN_PAGE_REDIRECT;
-        } else if (authority.contains("WAITER")) {
+        } else if (authority.contains("ROLE_WAITER")) {
             path = Path.WAITER_PAGE_REDIRECT;
-        } else if (authority.contains("USER")) {
+        } else if (authority.contains("ROLE_USER")) {
             path = Path.USER_ROOMS_REDIRECT;
         }
         return path;

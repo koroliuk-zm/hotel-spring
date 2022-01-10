@@ -20,7 +20,9 @@ public class Path {
 	public static final String FORWARD_ADMIN_PROFILE = "/admin/admin_view_profile";
 	public static final String FORWARD_USER_PROFILE = "/user/user_view_profile";
 	public static final String REDIRECT_TO_PROFILE = "redirect:/viewProfile";
-	public static final String ADMIN_PAGE_REDIRECT = "redirect:/administrator";
+	public static final String ADMIN_PAGE_REDIRECT = "redirect:/admin";
 	public static final String WAITER_PAGE_REDIRECT = "redirect:/waiter";
 	public static final String USER_ROOMS_REDIRECT = "redirect:/user/rooms";
+	public static final String ADMIN_PAGE = "/admin/admin_page";
+	public static final String ADMIN_ALL_USERS_PAGE = "/admin/all_users";
 }

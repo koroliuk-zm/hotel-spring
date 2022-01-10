@@ -3,6 +3,9 @@ package com.dkoroliuk.hotel_spring.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -66,6 +69,11 @@ public class UserServiceImpl implements UserService {
 
 	public UserDTO findUserByLogin(String login) {
 		return userRepo.findUserByLogin(login).map(DTOHelper::toDTO).orElse(null);
+	}
+
+	@Override
+	public Page<User> getAllUsersPageable(int page, Integer size) {
+		return userRepo.findAll(PageRequest.of(page, size, Sort.by("userRole.role")));
 	}
 
 }
