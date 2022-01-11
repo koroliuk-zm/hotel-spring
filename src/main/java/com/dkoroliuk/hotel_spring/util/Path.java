@@ -25,4 +25,7 @@ public class Path {
 	public static final String USER_ROOMS_REDIRECT = "redirect:/user/rooms";
 	public static final String ADMIN_PAGE = "/admin/admin_page";
 	public static final String ADMIN_ALL_USERS_PAGE = "/admin/all_users";
+	public static final String ADMIN_USER_FORM = "/admin/create_user";
+	public static final String REDIRECT_ADMIN_ALL_USERS_PAGE = "redirect:/admin/users";
+	public static final String EDIT_USER_PAGE = "/admin/edit_user";
 }
