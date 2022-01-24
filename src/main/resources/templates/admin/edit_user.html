@@ -75,6 +75,12 @@
                         </select>
                     </div>
                     <br>
+                    <div class="form-check form-switch">
+                        <label for="isEnable" th:text="#{c.isEnable}">Enable</label>
+                        <input id="isEnable" type="checkbox" name="isEnable" th:field="*{enable}"
+                               class="form-check-input">
+                    </div>
+                    <br>
                     <button type="submit" class="btn btn-outline-primary mb-3" th:text="#{c.button.submit}">
                         Submit
                     </button>

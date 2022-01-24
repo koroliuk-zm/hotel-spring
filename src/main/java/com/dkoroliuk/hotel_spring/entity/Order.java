@@ -16,9 +16,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -33,8 +35,6 @@ public class Order {
     private LocalDate checkInDate;
 	@Column(name = "check_out_date", nullable = false)
     private LocalDate checkOutDate;
-	@Column(name = "seats_number", nullable = false)
-    private int seatsNumber;
 	@Column(name = "total_cost", nullable = false)
     private int totalCost;
 	@ManyToOne
@@ -44,6 +44,7 @@ public class Order {
     @JoinColumn(name = "users_id", referencedColumnName = "id", nullable = false)
     private User user;
 	@ManyToOne
-    @JoinColumn(name = "rooms_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "rooms_id", referencedColumnName = "id")
     private Room room;
+
 }

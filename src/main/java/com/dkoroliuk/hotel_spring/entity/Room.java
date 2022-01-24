@@ -2,6 +2,7 @@ package com.dkoroliuk.hotel_spring.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,12 +14,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 @Table(name = "rooms")
 public class Room {
 	@Id
@@ -33,7 +36,7 @@ public class Room {
 	@ManyToOne
     @JoinColumn(name = "room_statuses_id", referencedColumnName = "id", nullable = false)
     private RoomStatus roomStatus;
-	@ManyToOne
+	@ManyToOne (fetch=FetchType.LAZY)
     @JoinColumn(name = "room_types_id", referencedColumnName = "id", nullable = false)
     private RoomType roomType;
 	@Column(name = "description", nullable = false, length = 1000)

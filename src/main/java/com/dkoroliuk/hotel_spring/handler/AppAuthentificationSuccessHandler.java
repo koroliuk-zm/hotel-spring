@@ -47,7 +47,6 @@ public class AppAuthentificationSuccessHandler implements AuthenticationSuccessH
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {
             String authorityName = grantedAuthority.getAuthority();
-            System.out.println(authorityName);
             if(roleTargetUrl.containsKey(authorityName)) {
                 return roleTargetUrl.get(authorityName);
             }

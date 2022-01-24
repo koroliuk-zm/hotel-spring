@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.dkoroliuk.hotel_spring.entity.UserRole;
 
-@Repository
-public interface UserRoleRepo extends JpaRepository<UserRole, Long> {
-}
+//@Repository
+//public interface UserRoleRepo extends JpaRepository<UserRole, Long> {
+//}

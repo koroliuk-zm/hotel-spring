@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/","/registration", "/error", "/error_404").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/waiter/**").hasRole("WAITER")
                     .antMatchers("/user/**").hasRole("USER")
                     .anyRequest().authenticated()
                 .and()

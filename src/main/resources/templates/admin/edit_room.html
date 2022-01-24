@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title th:text="#{er.title}">Edit room</title>
+</head>
+<body>
+<div th:insert="navbars/admin_navbar :: navbar">Navbar</div>
+<br>
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <h1 class="text-center" th:text="#{er.title}">Edit room</h1>
+            <div class="card-body">
+                <form th:action="@{/admin/rooms/{id}(id=${roomDTO.id})}" th:object="${roomDTO}" th:method="post">
+                <input type="hidden" th:field="*{perdayCostOld}" name="perdayCostOld">
+                <input type="hidden" th:field="*{roomStatusOld.status}" name="roomStatusOld.status">
+                    <div class="form-group">
+                        <label for="number" th:text="#{c.number}">Room number</label>
+                        <input id="number" type="text" name="number" th:field="*{number}" class="form-control"
+                               th:placeholder="#{c.numberPH}" th:required="required">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('number')}" th:text="${err}" style="color:red;">Error</li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="seatsAmount" th:text="#{c.seatsAmount}">Seats amount</label>
+                        <input id="seatsAmount" type="text" name="seatsAmount" th:field="*{seatsAmount}" class="form-control"
+                               th:placeholder="#{c.seatsAmountPH}" th:required="required">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('seatsAmount')}" th:text="${err}" style="color:red;">Error</li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="perdayCost" th:text="#{c.perdayCost}">perdayCost</label>
+                        <input id="perdayCost" type="text" name="perdayCost" th:field="*{perdayCost}" class="form-control"
+                               th:placeholder="#{c.perdayCostPH}" th:required="required">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('perdayCost')}" th:text="${err}" style="color:red;">Error</li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomStatus.id" th:text="#{c.roomStatus.status}">Room status</label>
+                        <select id="roomStatus.id" class="form-control" name="roomStatus" th:field="*{roomStatus.id}">
+                            <option th:value="1" th:text="#{c.free}">Free</option>
+                            <option th:value="2" th:text="#{c.booked}">Booked</option>
+                            <option th:value="3" th:text="#{c.busy}">Busy</option>
+                            <option th:value="4" th:text="#{c.unavailable}">Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomType.id" th:text="#{c.roomType.type}">Room type</label>
+                        <select id="roomType.id" class="form-control" name="roomType" th:field="*{roomType.id}">
+                            <option th:value="1" th:text="#{c.standart}">Standart room</option>
+                            <option th:value="2" th:text="#{c.family}">Family room</option>
+                            <option th:value="3" th:text="#{c.duplex}">Duplex room</option>
+                            <option th:value="4" th:text="#{c.president}">President room</option>
+                            <option th:value="5" th:text="#{c.triple}">Triple room</option>
+                        </select>
+                    </div>
+					<div class="form-group">
+                        <label for="description" th:text="#{c.description}">Description</label>
+                        <input id="description" type="text" name="description" th:field="*{description}"
+                               class="form-control"
+                               th:placeholder="#{c.descriptionPH}" th:required="required">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('description')}" th:text="${err}" style="color:red;">
+                                Error
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-outline-primary mb-3" th:text="#{c.button.submit}">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

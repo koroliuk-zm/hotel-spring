@@ -1,18 +1,30 @@
 package com.dkoroliuk.hotel_spring.controller;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dkoroliuk.hotel_spring.dto.UserDTO;
+import com.dkoroliuk.hotel_spring.entity.Room;
+import com.dkoroliuk.hotel_spring.entity.User;
 import com.dkoroliuk.hotel_spring.entity.UserRole;
+import com.dkoroliuk.hotel_spring.service.RoomService;
 import com.dkoroliuk.hotel_spring.service.UserService;
+import com.dkoroliuk.hotel_spring.util.Pagination;
+import com.dkoroliuk.hotel_spring.util.Pagination.RoomPaginationParam;
 import com.dkoroliuk.hotel_spring.util.Path;
 import com.dkoroliuk.hotel_spring.validators.UserDTOValidator;
 
@@ -27,19 +39,7 @@ public class MainController {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
     private UserService userService;
     private UserDTOValidator userDTOValidator;
-
-    /**
-     * Method to access index page. Handles GET request for URL "/"
-     * @param model instance of {@link Model}
-     * @param page number of requested page
-     * @param size size of requested page
-     * @param pagingParam instance of {@link BookPaginationParam}, which holds parameters for pagination
-     * @return view "/index"
-     */
-    @GetMapping
-    public String indexPage() {
-        return Path.WELCOME_PAGE;
-    }
+    private RoomService roomService;
 
     /**
      * Method to access login page. Handles GET request for URL "/login"
@@ -92,5 +92,32 @@ public class MainController {
         String message = String.format("User with login \"%s\" successfully registered", userDTO.getLogin());
         logger.info(message);
         return Path.LOGIN_PAGE_REDIRECT;
+    }
+    
+    /**
+     * Method to access index page. Handles GET request for URL "/"
+     * @param model instance of {@link Model}
+     * @param page number of requested page
+     * @param size size of requested page
+     * @param pagingParam instance of {@link RoomPaginationParam}, which holds parameters for pagination
+     * @return view "/index"
+     */
+    @GetMapping
+    public String indexPage(Model model, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size,
+                            @ModelAttribute Optional<RoomPaginationParam> pagingParam) {
+        RoomPaginationParam roomPaginationParam = pagingParam.orElse(new RoomPaginationParam());
+        model.addAttribute("pagingParam", roomPaginationParam);
+        int currentPage = page.orElse(1);
+        int currentSize = size.orElse(5);
+        Pageable pageable;
+        if (roomPaginationParam.getSortOrder().equals("asc")) {
+            pageable = PageRequest.of(currentPage - 1, currentSize, Sort.by(roomPaginationParam.getSortBy()));
+        } else {
+            pageable = PageRequest.of(currentPage - 1, currentSize, Sort.by(roomPaginationParam.getSortBy()).descending());
+        }
+        Page<Room> roomPage = roomService.findAllFreeRoomsPaginated(pageable);
+        model.addAttribute("roomPage", roomPage);
+        model.addAttribute("pageNumbers", Pagination.buildPageNumbers(roomPage.getTotalPages()));
+        return Path.WELCOME_PAGE;
     }
 }

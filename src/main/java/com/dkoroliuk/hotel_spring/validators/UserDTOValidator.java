@@ -9,7 +9,7 @@ import com.dkoroliuk.hotel_spring.dto.UserDTO;
 
 @Service
 public class UserDTOValidator implements Validator {
-    private static final String LOGIN_REGEX = "^[A-Za-z0-9]{1,20}$";
+    private static final String LOGIN_REGEX = "^[A-Za-z0-9]{4,20}$";
     private static final String PASSWORD_REGEX = "^[A-Za-z0-9]{6,}$";
     private static final String EMAIL_REGEX = "^[\\w\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 

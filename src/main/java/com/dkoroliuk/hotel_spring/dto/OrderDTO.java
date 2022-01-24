@@ -14,11 +14,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
@@ -29,10 +31,10 @@ public class OrderDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkOutDate;
     private LocalDate oldCheckOutDate;
-    private int seatsNumber;
     private int totalCost;
     private OrderStatus orderStatus;
     private int oldOrderStatusId;
     private User user;
     private Room room;
+
 }
