@@ -164,7 +164,7 @@ public class UserController {
     }
     
     /**
-     * Method to save new {@link Order}. Handles POST request for URL "/user/rooms"
+     * Method to save new {@link Order}. Handles POST request for URL "/rooms/order/create_new_order/"
      * @param roomOrderDTO model attribute {@link RoomOrderDTO} for entity {@link Order}
      * @return view "redirect:/user/rooms"
      */

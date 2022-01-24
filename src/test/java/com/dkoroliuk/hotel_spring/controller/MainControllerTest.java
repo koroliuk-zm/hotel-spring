@@ -17,8 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -99,17 +97,10 @@ class MainControllerTest {
     }
     
     @Test
-    @WithUserDetails(value = "dkoroliuk")
-    void correctLoginTest() throws Exception {
-    	mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        this.mockMvc.perform(post("/registration"))
-                .andExpect(status().is4xxClientError())
-                .andExpect(view().name(Path.REGISTRATION_PAGE));
-    }
-    
-    @Test
     void testUserLoginWithBadCredentials() throws Exception {
-        this.mockMvc.perform(post("/login").param("username", "user"))
+        this.mockMvc.perform(post("/login").param("login", "user"))
                 .andExpect(status().is4xxClientError());
     }
+    
+    
 }

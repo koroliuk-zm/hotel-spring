@@ -9,6 +9,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -43,6 +44,7 @@ import com.dkoroliuk.hotel_spring.service.UserService;
 import com.dkoroliuk.hotel_spring.util.Path;
 import com.dkoroliuk.hotel_spring.validators.RoomDTOValidator;
 import com.dkoroliuk.hotel_spring.validators.UserDTOValidator;
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 
 @WithUserDetails(value = "dkoroliuk")
 @SpringBootTest

@@ -92,7 +92,6 @@ public class WaiterController {
     	Request request = requestService.findRequestById(id);
         model.addAttribute(DTOHelper.toDTO(request));
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setUser(userService.findUserById(request.getUser().getId()));
         orderDTO.setCheckInDate(request.getCheckInDate());
         orderDTO.setCheckOutDate(request.getCheckOutDate());
         model.addAttribute(orderDTO);

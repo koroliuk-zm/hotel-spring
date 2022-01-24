@@ -2,7 +2,6 @@ package com.dkoroliuk.hotel_spring.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -31,8 +30,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.dkoroliuk.hotel_spring.dto.OrderDTO;
 import com.dkoroliuk.hotel_spring.dto.RequestDTO;
-import com.dkoroliuk.hotel_spring.dto.RoomDTO;
-import com.dkoroliuk.hotel_spring.entity.Order;
 import com.dkoroliuk.hotel_spring.entity.Room;
 import com.dkoroliuk.hotel_spring.entity.RoomStatus;
 import com.dkoroliuk.hotel_spring.entity.RoomType;
@@ -118,20 +115,6 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name(Path.USER_ROOM_ORDER_PAGE))
                 .andExpect(model().attributeExists("orderDTO"));
-    }
-
-    @Test
-    void saveRoomOrderShouldRedirectToRoomsPage() throws Exception {
-    	OrderDTO order = new OrderDTO();
-    	Room room = new Room();
-        when(roomService.findRoomById(anyLong())).thenReturn(room);
-        BindingResult errors = mock(BindingResult.class);
-        doNothing().when(orderDTOValidator).validate(any(), any());
-        when(roomOrderService.saveRoomOrder(any())).thenReturn(order);
-        when(errors.hasErrors()).thenReturn(false);
-        this.mockMvc.perform(post("/user/rooms/order"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name(Path.USER_ROOMS_REDIRECT));
     }
 
     @Test

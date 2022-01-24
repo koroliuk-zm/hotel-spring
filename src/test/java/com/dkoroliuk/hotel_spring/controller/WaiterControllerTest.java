@@ -30,10 +30,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.dkoroliuk.hotel_spring.dto.OrderDTO;
 import com.dkoroliuk.hotel_spring.dto.UserDTO;
 import com.dkoroliuk.hotel_spring.entity.Order;
-import com.dkoroliuk.hotel_spring.entity.OrderStatus;
 import com.dkoroliuk.hotel_spring.entity.Request;
 import com.dkoroliuk.hotel_spring.entity.Room;
 import com.dkoroliuk.hotel_spring.entity.RoomStatus;
@@ -93,11 +91,8 @@ class WaiterControllerTest {
     
     @Test
     void editBookOrderPageShouldReturnOrderEditPage() throws Exception {
-    	OrderDTO orderDTO = new OrderDTO();
-    	User user = new User();
         when(requestService.findRequestById(anyLong())).thenReturn(new Request());
-        when(userService.findUserById(anyLong())).thenReturn(user);
-        orderDTO.setUser(new User());
+        when(userService.findUserById(anyLong())).thenReturn(new User());
         this.mockMvc.perform(get("/waiter/orders/edit/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(view().name(Path.WAITER_ORDER_EDIT_PAGE))

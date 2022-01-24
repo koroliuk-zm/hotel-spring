@@ -19,7 +19,7 @@
 				class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h1 class="text-center" th:text="#{cno.head}">Create new order</h1>
 				<div class="card-body">
-					<form th:action="@{/user/rooms/order/create_new_order}" th:object="${requestDTO}" method="post" width="60%">
+					<form th:action="@{/user/rooms/order/create_new_order/}" th:object="${requestDTO}" method="post" width="60%">
 						<div class="form-group">
 							<label for="seatsNumber" th:text="#{c.seatsAmount}">Seats
 								Amount</label> <input id="seatsNumber" type="text" name="seatsNumber"

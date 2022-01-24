@@ -6,9 +6,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
 	public void setOrdersExpiredWhenIsNotPaidMoreThanTwoDays() {
 		List<Order> orders = orderRepo.findAll();
 		for(Order order:orders) {
-			if(ChronoUnit.MINUTES.between(order.getOrderDate(),LocalDateTime.now())>1&&order.getOrderStatus().getId()!=3) {
+			if(ChronoUnit.MINUTES.between(order.getOrderDate(),LocalDateTime.now())>1&&order.getOrderStatus().getId()<3) {
 				Room room = roomRepo.getById(order.getRoom().getId());
 				room.setRoomStatus(new RoomStatus());
 				room.getRoomStatus().setId(1);
