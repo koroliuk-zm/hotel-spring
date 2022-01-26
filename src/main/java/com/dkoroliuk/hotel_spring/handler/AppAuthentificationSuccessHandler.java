@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 /**
  * Defines strategy used to handle a successful user authentication in such way that
- * users with role "ADMIN" moves to URL "/administrator",
+ * users with role "ADMIN" moves to URL "/admin",
  * "WAITER" - "/waiter", "USER" - "/user/rooms".
  */
 public class AppAuthentificationSuccessHandler implements AuthenticationSuccessHandler {

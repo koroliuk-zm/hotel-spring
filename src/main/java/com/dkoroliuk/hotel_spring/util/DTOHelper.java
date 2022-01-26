@@ -90,10 +90,8 @@ public class DTOHelper {
 				.orderDate(order.getOrderDate())
 				.checkInDate(order.getCheckInDate())
 				.checkOutDate(order.getCheckOutDate())
-				.oldCheckOutDate(order.getCheckOutDate())
 				.totalCost(order.getTotalCost())
 				.orderStatus(order.getOrderStatus())
-				.oldOrderStatusId(order.getOrderStatus().getId())
 				.user(order.getUser())
 				.room(order.getRoom())
 				.build();    	

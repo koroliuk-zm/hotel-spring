@@ -11,16 +11,12 @@ import com.dkoroliuk.hotel_spring.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
@@ -30,10 +26,8 @@ public class OrderDTO {
     private LocalDate checkInDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkOutDate;
-    private LocalDate oldCheckOutDate;
     private int totalCost;
     private OrderStatus orderStatus;
-    private int oldOrderStatusId;
     private User user;
     private Room room;
 

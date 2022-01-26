@@ -25,6 +25,7 @@ import com.dkoroliuk.hotel_spring.entity.Order;
 import com.dkoroliuk.hotel_spring.entity.OrderStatus;
 import com.dkoroliuk.hotel_spring.entity.Request;
 import com.dkoroliuk.hotel_spring.entity.Room;
+import com.dkoroliuk.hotel_spring.repository.UserRepo;
 import com.dkoroliuk.hotel_spring.service.OrderService;
 import com.dkoroliuk.hotel_spring.service.RequestService;
 import com.dkoroliuk.hotel_spring.service.RoomService;
@@ -94,6 +95,7 @@ public class WaiterController {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setCheckInDate(request.getCheckInDate());
         orderDTO.setCheckOutDate(request.getCheckOutDate());
+        orderDTO.setUser(userService.findUserById(request.getUser().getId()));
         model.addAttribute(orderDTO);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         long userId = ((AppUserDetails) principal).getId();

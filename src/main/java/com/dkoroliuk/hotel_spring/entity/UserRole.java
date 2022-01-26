@@ -8,17 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Entity
-@Table(name = "user_roles")
+@Table(name = "user_role")
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

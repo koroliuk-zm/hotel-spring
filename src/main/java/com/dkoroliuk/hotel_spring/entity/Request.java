@@ -13,18 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "requests")
+@Table(name = "request")
 public class Request {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -11,19 +11,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 
+@Data
 @Entity
-@Getter
-@Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Table(name = "user")
 public class User {
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)

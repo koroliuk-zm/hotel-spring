@@ -8,18 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@ToString
-@Table(name = "room_types")
+@Table(name = "room_type")
 public class RoomType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

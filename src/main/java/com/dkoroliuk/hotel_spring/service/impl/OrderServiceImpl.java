@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -97,16 +98,20 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void setOrdersExpiredWhenIsNotPaidMoreThanTwoDays() {
 		List<Order> orders = orderRepo.findAll();
-		for(Order order:orders) {
-			if(ChronoUnit.MINUTES.between(order.getOrderDate(),LocalDateTime.now())>1&&order.getOrderStatus().getId()<3) {
-				Room room = roomRepo.getById(order.getRoom().getId());
-				room.setRoomStatus(new RoomStatus());
-				room.getRoomStatus().setId(1);
-				roomRepo.save(room);
-				order.setOrderStatus(new OrderStatus());
-				order.getOrderStatus().setId(4);
-				orderRepo.save(order);
-			}
+		
+		List<Order> unpaidOrders = orders.stream()
+				.filter(o-> ChronoUnit.MINUTES.between(o.getOrderDate(),LocalDateTime.now())>1)
+				.filter(o -> o.getOrderStatus().getId()<3)
+				.collect(Collectors.toList());
+
+		for (Order order:unpaidOrders) {
+			Room room = roomRepo.getById(order.getRoom().getId());
+			room.setRoomStatus(new RoomStatus());
+			room.getRoomStatus().setId(1);
+			roomRepo.save(room);
+			order.setOrderStatus(new OrderStatus());
+			order.getOrderStatus().setId(4);
+			orderRepo.save(order);
 		}
 	}
 
@@ -115,8 +120,13 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void closeOrder() {
 		List<Order> orders = orderRepo.findAll();
-		for(Order order:orders) {
-			if(LocalDate.now().isAfter(order.getCheckOutDate())&&order.getOrderStatus().getId()==3) {
+		
+		List<Order> closedOrders = orders.stream()
+				.filter(o-> LocalDate.now().isAfter(o.getCheckOutDate()))
+				.filter(o -> o.getOrderStatus().getId()==3)
+				.collect(Collectors.toList());
+		
+		for(Order order:closedOrders) {
 				Room room = roomRepo.getById(order.getRoom().getId());
 				room.setRoomStatus(new RoomStatus());
 				room.getRoomStatus().setId(1);
@@ -124,7 +134,6 @@ public class OrderServiceImpl implements OrderService {
 				order.setOrderStatus(new OrderStatus());
 				order.getOrderStatus().setId(5);
 				orderRepo.save(order);
-			}
 		}
 	}
 }
