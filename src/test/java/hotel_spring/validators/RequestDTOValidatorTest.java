@@ -12,15 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
-import com.dkoroliuk.hotel_spring.dto.OrderDTO;
 import com.dkoroliuk.hotel_spring.dto.RequestDTO;
-import com.dkoroliuk.hotel_spring.entity.Order;
-import com.dkoroliuk.hotel_spring.entity.OrderStatus;
 import com.dkoroliuk.hotel_spring.entity.Request;
-import com.dkoroliuk.hotel_spring.entity.Room;
-import com.dkoroliuk.hotel_spring.entity.RoomStatus;
 import com.dkoroliuk.hotel_spring.entity.RoomType;
-import com.dkoroliuk.hotel_spring.validators.OrderDTOValidator;
 import com.dkoroliuk.hotel_spring.validators.RequestDTOValidator;
 
 class RequestDTOValidatorTest {

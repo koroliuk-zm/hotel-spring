@@ -18,14 +18,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestDTO {
-	  private long id;
-	    private LocalDateTime requestDate;
-	    @DateTimeFormat(pattern = "yyyy-MM-dd")
-	    private LocalDate checkInDate;
-	    @DateTimeFormat(pattern = "yyyy-MM-dd")
-	    private LocalDate checkOutDate;
-	    private int seatsNumber;
-	    private User user;
-	    private RoomType roomType;
-	    private boolean isProceed;
+	private long id;
+	private LocalDateTime requestDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate checkInDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate checkOutDate;
+	private int seatsNumber;
+	private User user;
+	private RoomType roomType;
+	private boolean isProceed;
 }

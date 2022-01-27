@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,20 +21,20 @@ import lombok.NoArgsConstructor;
 @Table(name = "room")
 public class Room {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	@Column(name = "number", nullable = false)
 	private int number;
 	@Column(name = "seats_amount", nullable = false)
-    private int seatsAmount;
+	private int seatsAmount;
 	@Column(name = "perday_cost", nullable = false)
-    private int perdayCost;
+	private int perdayCost;
 	@ManyToOne
-    @JoinColumn(name = "room_statuses_id", referencedColumnName = "id", nullable = false)
-    private RoomStatus roomStatus;
-	@ManyToOne (fetch=FetchType.LAZY)
-    @JoinColumn(name = "room_types_id", referencedColumnName = "id", nullable = false)
-    private RoomType roomType;
+	@JoinColumn(name = "room_statuses_id", referencedColumnName = "id", nullable = false)
+	private RoomStatus roomStatus;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "room_types_id", referencedColumnName = "id", nullable = false)
+	private RoomType roomType;
 	@Column(name = "description", nullable = false, length = 1000)
-    private String description;
+	private String description;
 }

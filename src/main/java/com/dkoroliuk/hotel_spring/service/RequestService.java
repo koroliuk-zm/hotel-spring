@@ -8,11 +8,11 @@ import com.dkoroliuk.hotel_spring.dto.RequestDTO;
 import com.dkoroliuk.hotel_spring.entity.Request;
 
 public interface RequestService {
-	RequestDTO saveNewRequest (RequestDTO requestDTO);
+	RequestDTO saveNewRequest(RequestDTO requestDTO);
 
-	List<RequestDTO> findUsersUnhandledRequests(long userById);
+	List<RequestDTO> findUsersRequests(long id);
 
-	Page<Request> findNewUnhandledRequestsPageable(int page, Integer size);
+	Page<Request> findAllRequestsPageable(int page, Integer size);
 
 	Request findRequestById(Long id);
 

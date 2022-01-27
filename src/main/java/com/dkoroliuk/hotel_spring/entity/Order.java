@@ -23,24 +23,24 @@ import lombok.NoArgsConstructor;
 @Table(name = "orders")
 public class Order {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	@Column(name = "order_date", nullable = false)
-    private LocalDateTime orderDate;
+	private LocalDateTime orderDate;
 	@Column(name = "check_in_date", nullable = false)
-    private LocalDate checkInDate;
+	private LocalDate checkInDate;
 	@Column(name = "check_out_date", nullable = false)
-    private LocalDate checkOutDate;
+	private LocalDate checkOutDate;
 	@Column(name = "total_cost", nullable = false)
-    private int totalCost;
+	private int totalCost;
 	@ManyToOne
-    @JoinColumn(name = "order_statuses_id", referencedColumnName = "id", nullable = false)
-    private OrderStatus orderStatus;
+	@JoinColumn(name = "order_statuses_id", referencedColumnName = "id", nullable = false)
+	private OrderStatus orderStatus;
 	@ManyToOne
-    @JoinColumn(name = "users_id", referencedColumnName = "id", nullable = false)
-    private User user;
+	@JoinColumn(name = "users_id", referencedColumnName = "id", nullable = false)
+	private User user;
 	@ManyToOne
-    @JoinColumn(name = "rooms_id", referencedColumnName = "id")
-    private Room room;
+	@JoinColumn(name = "rooms_id", referencedColumnName = "id")
+	private Room room;
 
 }

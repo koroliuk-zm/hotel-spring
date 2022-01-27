@@ -23,22 +23,20 @@ import lombok.NoArgsConstructor;
 @Table(name = "request")
 public class Request {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	@Column(name = "request_date", nullable = false)
-    private LocalDateTime requestDate;
+	private LocalDateTime requestDate;
 	@Column(name = "check_in_date", nullable = false)
-    private LocalDate checkInDate;
+	private LocalDate checkInDate;
 	@Column(name = "check_out_date", nullable = false)
-    private LocalDate checkOutDate;
+	private LocalDate checkOutDate;
 	@Column(name = "seats_number", nullable = false)
-    private int seatsNumber;
+	private int seatsNumber;
 	@ManyToOne
-    @JoinColumn(name = "users_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "users_id", referencedColumnName = "id", nullable = false)
 	private User user;
 	@ManyToOne
-    @JoinColumn(name = "room_types_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "room_types_id", referencedColumnName = "id", nullable = false)
 	private RoomType roomType;
-	 @Column(name = "is_proceed", nullable = false)
-	  private boolean isProceed;
 }

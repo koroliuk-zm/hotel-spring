@@ -49,67 +49,67 @@ import com.dkoroliuk.hotel_spring.validators.OrderDTOValidator;
 @AutoConfigureMockMvc
 class WaiterControllerTest {
 	private MockMvc mockMvc;
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-    @MockBean
-    UserService userService;
-    @MockBean
-    OrderService orderService;
-    @MockBean
-    RoomService roomService;
-    @MockBean
-    RequestService requestService;
-    @MockBean
-    OrderDTOValidator orderDTOValidator;
+	@Autowired
+	private WebApplicationContext webApplicationContext;
+	@MockBean
+	UserService userService;
+	@MockBean
+	OrderService orderService;
+	@MockBean
+	RoomService roomService;
+	@MockBean
+	RequestService requestService;
+	@MockBean
+	OrderDTOValidator orderDTOValidator;
 
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
+	@BeforeEach
+	void setUp() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+	}
 
-    @Test
-    void waiterPageShouldReturnWaiterPage() throws Exception {
-        Room room = new Room();
-        room.setRoomType(new RoomType(1, "standart"));
-        room.setRoomStatus(new RoomStatus(1, "free"));
-        List<Room> roomList = Collections.singletonList(room);
-        Page<Room> rooms = new PageImpl<>(roomList);
-        Request request = new Request();
-        User user = new User();
-        request.setUser(user);
-        request.setRoomType(new RoomType(1, "standart"));
-        List<Request> requestList = Collections.singletonList(request);
-        Page<Request> requests = new PageImpl<>(requestList);
-        when(userService.findUserByLogin(anyString())).thenReturn(new UserDTO());
-        when(requestService.findNewUnhandledRequestsPageable(anyInt(), anyInt())).thenReturn(requests);
-        when(roomService.findAllFreeRoomsPaginated(anyInt(), anyInt())).thenReturn(rooms);
-        this.mockMvc.perform(get("/waiter"))
-                .andExpect(status().isOk())
-                .andExpect(view().name(Path.WAITER_PAGE))
-                .andExpect(model().attributeExists("userDTO", "currentPage", "pageNumbers", "roomsCurrentPage", "roomsPageNumbers"));
-    }
-    
-    @Test
-    void editBookOrderPageShouldReturnOrderEditPage() throws Exception {
-        when(requestService.findRequestById(anyLong())).thenReturn(new Request());
-        when(userService.findUserById(anyLong())).thenReturn(new User());
-        this.mockMvc.perform(get("/waiter/orders/edit/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(view().name(Path.WAITER_ORDER_EDIT_PAGE))
-                .andExpect(model().attributeExists("orderDTO", "requestDTO"));
-        
-    }
-    
-    @Test
-    void updateBookOrderWhenOrderValidShouldRedirectToWaiterPage() throws Exception {
-    	Order order = new Order();
-        BindingResult errors = mock(BindingResult.class);
-        doNothing().when(orderDTOValidator).validate(any(), any());
-        when(orderService.updateOrder(anyLong(),any())).thenReturn(order);
-        when(errors.hasErrors()).thenReturn(false);
-        this.mockMvc.perform(post("/waiter/orders/{id}", 1L, order))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name(Path.WAITER_PAGE_REDIRECT));
-    }
+	@Test
+	void waiterPageShouldReturnWaiterPage() throws Exception {
+		Room room = new Room();
+		room.setRoomType(new RoomType(1, "standart"));
+		room.setRoomStatus(new RoomStatus(1, "free"));
+		List<Room> roomList = Collections.singletonList(room);
+		Page<Room> rooms = new PageImpl<>(roomList);
+		Request request = new Request();
+		User user = new User();
+		request.setUser(user);
+		request.setRoomType(new RoomType(1, "standart"));
+		List<Request> requestList = Collections.singletonList(request);
+		Page<Request> requests = new PageImpl<>(requestList);
+		when(userService.findUserByLogin(anyString())).thenReturn(new UserDTO());
+		when(requestService.findAllRequestsPageable(anyInt(), anyInt())).thenReturn(requests);
+		when(roomService.findAllFreeRoomsPaginated(anyInt(), anyInt())).thenReturn(rooms);
+		this.mockMvc.perform(get("/waiter")).andExpect(status().isOk()).andExpect(view().name(Path.WAITER_PAGE))
+				.andExpect(model().attributeExists("userDTO", "currentPage", "pageNumbers", "roomsCurrentPage",
+						"roomsPageNumbers"));
+	}
+
+	@Test
+	void editBookOrderPageShouldReturnOrderEditPage() throws Exception {
+		Request request = new Request();
+		User user = new User();
+		request.setUser(user);
+		when(requestService.findRequestById(anyLong())).thenReturn(request);
+		when(userService.findUserById(anyLong())).thenReturn(user);
+		this.mockMvc.perform(get("/waiter/orders/edit/{id}", 1L)).andExpect(status().isOk())
+				.andExpect(view().name(Path.WAITER_ORDER_EDIT_PAGE))
+				.andExpect(model().attributeExists("orderDTO", "requestDTO"));
+
+	}
+
+	@Test
+	void updateBookOrderWhenOrderValidShouldRedirectToWaiterPage() throws Exception {
+		Order order = new Order();
+		BindingResult errors = mock(BindingResult.class);
+		doNothing().when(orderDTOValidator).validate(any(), any());
+		when(orderService.updateOrder(anyLong(), any())).thenReturn(order);
+		when(errors.hasErrors()).thenReturn(false);
+		this.mockMvc.perform(post("/waiter/orders/{id}", 1L, order)).andExpect(status().is3xxRedirection())
+				.andExpect(view().name(Path.WAITER_PAGE_REDIRECT));
+	}
 
 }

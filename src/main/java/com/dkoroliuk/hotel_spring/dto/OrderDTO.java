@@ -14,21 +14,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
-    private long id;
-    private LocalDateTime orderDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate checkInDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate checkOutDate;
-    private int totalCost;
-    private OrderStatus orderStatus;
-    private User user;
-    private Room room;
+	private long id;
+	private LocalDateTime orderDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate checkInDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate checkOutDate;
+	private int totalCost;
+	private OrderStatus orderStatus;
+	private User user;
+	private Room room;
 
 }

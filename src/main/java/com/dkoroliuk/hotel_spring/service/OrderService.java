@@ -13,19 +13,19 @@ public interface OrderService {
 
 	OrderDTO saveRoomOrder(OrderDTO roomOrderDTO);
 
-
 	Order updateOrder(Long id, OrderDTO orderDTO);
 
 	void deleteOrderById(Long id);
-	
+
 	Long getRoomIdByOrder(Long id);
 
 	void payOrder(Long id);
 
 	List<OrderDTO> findUsersProcessedOrders(long userById);
-	
+
 	@Transactional
 	void setOrdersExpiredWhenIsNotPaidMoreThanTwoDays();
+
 	@Transactional
 	void closeOrder();
 }

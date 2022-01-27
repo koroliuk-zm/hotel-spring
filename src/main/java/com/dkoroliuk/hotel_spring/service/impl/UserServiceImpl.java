@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.dkoroliuk.hotel_spring.dto.UserDTO;
 import com.dkoroliuk.hotel_spring.entity.User;
@@ -18,14 +18,13 @@ import com.dkoroliuk.hotel_spring.util.DTOHelper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-
 @NoArgsConstructor
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+@AllArgsConstructor(onConstructor_ = { @Autowired })
 @Service
 public class UserServiceImpl implements UserService {
 	private UserRepo userRepo;
 	private PasswordEncoder passwordEncoder;
-	
+
 	public List<User> getAllUsers() {
 		return userRepo.findAll();
 	}
@@ -39,13 +38,11 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userDTO.getEmail());
 		user.setUserRole(userDTO.getUserRole());
 		user.setEnable(userDTO.isEnable());
-		
 		return userRepo.save(user);
 	}
 
 	public User findUserById(Long id) {
 		return userRepo.getById(id);
-		
 	}
 
 	public User updateUser(Long id, UserDTO userDTO) {
@@ -54,8 +51,8 @@ public class UserServiceImpl implements UserService {
 		user.setSurname(userDTO.getSurname());
 		user.setLogin(userDTO.getLogin());
 		if (!userDTO.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        }
+			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+		}
 		user.setEmail(userDTO.getEmail());
 		user.setUserRole(userDTO.getUserRole());
 		user.setEnable(userDTO.isEnable());
@@ -64,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
 	public void deleteUserById(Long id) {
 		userRepo.deleteById(id);
-		
+
 	}
 
 	public UserDTO findUserByLogin(String login) {

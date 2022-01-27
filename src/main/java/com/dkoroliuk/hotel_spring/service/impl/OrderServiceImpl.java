@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +27,21 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+@AllArgsConstructor(onConstructor_ = { @Autowired })
 @Service
 public class OrderServiceImpl implements OrderService {
 	OrderRepo orderRepo;
 	RoomRepo roomRepo;
 	RequestRepo requestRepo;
 
-
 	@Override
 	public List<OrderDTO> findUsersOngoingOrders(long userId) {
-		return DTOHelper.orderListToDTO(orderRepo.getUsersOngoingOrders(userId));
+		return DTOHelper.orderListToDTO(orderRepo.findAllByUserIdAndOrderStatusIdEquals(userId, 2));
 	}
-	
+
 	@Override
 	public List<OrderDTO> findUsersProcessedOrders(long userId) {
-		return DTOHelper.orderListToDTO(orderRepo.getUsersProcessedOrders(userId));
+		return DTOHelper.orderListToDTO(orderRepo.findAllByUserIdAndOrderStatusIdEquals(userId, 3));
 	}
 
 	@Override
@@ -56,7 +56,9 @@ public class OrderServiceImpl implements OrderService {
 		order.setRoom(roomOrderDTO.getRoom());
 		roomRepo.changeRoomStatus(order.getRoom().getId(), 2);
 		Room room = roomRepo.getById(order.getRoom().getId());
-		order.setTotalCost((int) ((ChronoUnit.DAYS.between(roomOrderDTO.getCheckInDate(), roomOrderDTO.getCheckOutDate())+1)*room.getPerdayCost()));
+		order.setTotalCost(
+				(int) ((ChronoUnit.DAYS.between(roomOrderDTO.getCheckInDate(), roomOrderDTO.getCheckOutDate()) + 1)
+						* room.getPerdayCost()));
 		return DTOHelper.toDTO(orderRepo.save(order));
 	}
 
@@ -72,11 +74,12 @@ public class OrderServiceImpl implements OrderService {
 		order.setRoom(roomRepo.getRoomByNumber(roomOrderDTO.getRoom().getNumber()));
 		roomRepo.changeRoomStatus(order.getRoom().getId(), 2);
 		Room room = roomRepo.getById(order.getRoom().getId());
-		order.setTotalCost((int) ((ChronoUnit.DAYS.between(roomOrderDTO.getCheckInDate(), roomOrderDTO.getCheckOutDate())+1)*room.getPerdayCost()));
+		order.setTotalCost(
+				(int) ((ChronoUnit.DAYS.between(roomOrderDTO.getCheckInDate(), roomOrderDTO.getCheckOutDate()) + 1)
+						* room.getPerdayCost()));
 		return orderRepo.save(order);
 	}
-	
-	
+
 	@Override
 	public void deleteOrderById(Long id) {
 		orderRepo.deleteById(id);
@@ -85,26 +88,26 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Long getRoomIdByOrder(Long id) {
 		Order order = orderRepo.getById(id);
-		return  order.getRoom().getId();
+		return order.getRoom().getId();
 	}
 
 	@Override
 	public void payOrder(Long id) {
 		orderRepo.changeOrderStatus(id, 3);
 	}
+	
 
-
+	
 	@Scheduled(fixedDelay = 10000, initialDelay = 1000)
 	@Override
 	public void setOrdersExpiredWhenIsNotPaidMoreThanTwoDays() {
 		List<Order> orders = orderRepo.findAll();
-		
-		List<Order> unpaidOrders = orders.stream()
-				.filter(o-> ChronoUnit.MINUTES.between(o.getOrderDate(),LocalDateTime.now())>1)
-				.filter(o -> o.getOrderStatus().getId()<3)
-				.collect(Collectors.toList());
 
-		for (Order order:unpaidOrders) {
+		List<Order> unpaidOrders = orders.stream()
+				.filter(o -> ChronoUnit.MINUTES.between(o.getOrderDate(), LocalDateTime.now()) > 1)
+				.filter(o -> o.getOrderStatus().getId() < 3).collect(Collectors.toList());
+
+		for (Order order : unpaidOrders) {
 			Room room = roomRepo.getById(order.getRoom().getId());
 			room.setRoomStatus(new RoomStatus());
 			room.getRoomStatus().setId(1);
@@ -115,25 +118,22 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 
-
 	@Scheduled(fixedDelay = 10000, initialDelay = 1000)
 	@Override
 	public void closeOrder() {
 		List<Order> orders = orderRepo.findAll();
-		
-		List<Order> closedOrders = orders.stream()
-				.filter(o-> LocalDate.now().isAfter(o.getCheckOutDate()))
-				.filter(o -> o.getOrderStatus().getId()==3)
-				.collect(Collectors.toList());
-		
-		for(Order order:closedOrders) {
-				Room room = roomRepo.getById(order.getRoom().getId());
-				room.setRoomStatus(new RoomStatus());
-				room.getRoomStatus().setId(1);
-				roomRepo.save(room);
-				order.setOrderStatus(new OrderStatus());
-				order.getOrderStatus().setId(5);
-				orderRepo.save(order);
+
+		List<Order> closedOrders = orders.stream().filter(o -> LocalDate.now().isAfter(o.getCheckOutDate()))
+				.filter(o -> o.getOrderStatus().getId() == 3).collect(Collectors.toList());
+
+		for (Order order : closedOrders) {
+			Room room = roomRepo.getById(order.getRoom().getId());
+			room.setRoomStatus(new RoomStatus());
+			room.getRoomStatus().setId(1);
+			roomRepo.save(room);
+			order.setOrderStatus(new OrderStatus());
+			order.getOrderStatus().setId(5);
+			orderRepo.save(order);
 		}
 	}
 }

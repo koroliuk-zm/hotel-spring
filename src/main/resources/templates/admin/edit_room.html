@@ -16,8 +16,6 @@
             <h1 class="text-center" th:text="#{er.title}">Edit room</h1>
             <div class="card-body">
                 <form th:action="@{/admin/rooms/{id}(id=${roomDTO.id})}" th:object="${roomDTO}" th:method="post">
-                <input type="hidden" th:field="*{perdayCostOld}" name="perdayCostOld">
-                <input type="hidden" th:field="*{roomStatusOld.status}" name="roomStatusOld.status">
                     <div class="form-group">
                         <label for="number" th:text="#{c.number}">Room number</label>
                         <input id="number" type="text" name="number" th:field="*{number}" class="form-control"

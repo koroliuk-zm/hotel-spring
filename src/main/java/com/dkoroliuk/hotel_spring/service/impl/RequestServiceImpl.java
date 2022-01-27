@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.dkoroliuk.hotel_spring.dto.RequestDTO;
 import com.dkoroliuk.hotel_spring.entity.Request;
-import com.dkoroliuk.hotel_spring.entity.User;
 import com.dkoroliuk.hotel_spring.repository.RequestRepo;
 import com.dkoroliuk.hotel_spring.service.RequestService;
 import com.dkoroliuk.hotel_spring.util.DTOHelper;
@@ -19,10 +18,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+@AllArgsConstructor(onConstructor_ = { @Autowired })
 @Service
 public class RequestServiceImpl implements RequestService {
 	RequestRepo requestRepo;
+
 	@Override
 	public RequestDTO saveNewRequest(RequestDTO requestDTO) {
 		Request request = new Request();
@@ -32,24 +32,27 @@ public class RequestServiceImpl implements RequestService {
 		request.setSeatsNumber(requestDTO.getSeatsNumber());
 		request.setRoomType(requestDTO.getRoomType());
 		request.setUser(requestDTO.getUser());
-		request.setProceed(requestDTO.isProceed());
 		return DTOHelper.toDTO(requestRepo.save(request));
 	}
+
 	@Override
-	public List<RequestDTO> findUsersUnhandledRequests(long userById) {
-		return DTOHelper.requestListToDTO(requestRepo.findUnhandledRequests(userById));
+	public List<RequestDTO> findUsersRequests(long id) {
+		return DTOHelper.requestListToDTO(requestRepo.findAllByUserId(id));
 	}
+
 	@Override
-	public Page<Request> findNewUnhandledRequestsPageable(int page, Integer size) {
-		return requestRepo.findNewRequestPageable(PageRequest.of(page, size, Sort.by("requestDate")));
+	public Page<Request> findAllRequestsPageable(int page, Integer size) {
+		return requestRepo.findAll(PageRequest.of(page, size, Sort.by("requestDate")));
 	}
+
 	@Override
 	public Request findRequestById(Long id) {
 		return requestRepo.getById(id);
 	}
+
 	@Override
 	public void deleteRequest(Long id) {
 		requestRepo.deleteById(id);
-		
+
 	}
 }

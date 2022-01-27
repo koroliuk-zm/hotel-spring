@@ -11,9 +11,9 @@ import com.dkoroliuk.hotel_spring.entity.Room;
 public interface RoomService {
 	List<Room> getAllRooms();
 
-    Room saveRoom(RoomDTO roomDTO);
+	Room saveRoom(RoomDTO roomDTO);
 
-    Page<Room> getAllRoomsPageable(Pageable pageable);
+	Page<Room> getAllRoomsPageable(Pageable pageable);
 
 	Room updateRoom(Long id, RoomDTO roomDTO);
 

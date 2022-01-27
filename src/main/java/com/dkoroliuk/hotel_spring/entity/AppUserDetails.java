@@ -9,27 +9,30 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Custom implementation of {@link UserDetails} interface. Used for authentication
+ * Custom implementation of {@link UserDetails} interface. Used for
+ * authentication
  */
 public class AppUserDetails implements UserDetails {
-    private final long id;
-    private final String login;
-    private final String password;
-    private final boolean isEnable;
-    private final List<GrantedAuthority> authorities;
 
-    public AppUserDetails(User user) {
-        id = user.getId();
-        login = user.getLogin();
-        password = user.getPassword();
-        isEnable = user.isEnable();
-        authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserRole().getRole().toUpperCase()));
-    }
+	private static final long serialVersionUID = 4025330751239008786L;
+	private final long id;
+	private final String login;
+	private final String password;
+	private final boolean isEnable;
+	private final List<GrantedAuthority> authorities;
 
-    public long getId() {
-        return id;
-    }
+	public AppUserDetails(User user) {
+		id = user.getId();
+		login = user.getLogin();
+		password = user.getPassword();
+		isEnable = user.isEnable();
+		authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserRole().getRole().toUpperCase()));
+	}
+
+	public long getId() {
+		return id;
+	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -58,18 +61,21 @@ public class AppUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		return isEnable;
 	}
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        AppUserDetails that = (AppUserDetails) o;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        return login.equals(that.login);
-    }
+		AppUserDetails that = (AppUserDetails) o;
 
-    @Override
-    public int hashCode() {
-        return login.hashCode();
-    }
+		return login.equals(that.login);
+	}
+
+	@Override
+	public int hashCode() {
+		return login.hashCode();
+	}
 }

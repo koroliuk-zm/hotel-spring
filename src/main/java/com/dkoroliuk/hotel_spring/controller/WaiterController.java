@@ -25,7 +25,6 @@ import com.dkoroliuk.hotel_spring.entity.Order;
 import com.dkoroliuk.hotel_spring.entity.OrderStatus;
 import com.dkoroliuk.hotel_spring.entity.Request;
 import com.dkoroliuk.hotel_spring.entity.Room;
-import com.dkoroliuk.hotel_spring.repository.UserRepo;
 import com.dkoroliuk.hotel_spring.service.OrderService;
 import com.dkoroliuk.hotel_spring.service.RequestService;
 import com.dkoroliuk.hotel_spring.service.RoomService;
@@ -41,8 +40,7 @@ import lombok.NoArgsConstructor;
 /**
  * Controller for "WAITER" role. Handles all request starts with "/waiter"
  */
-@NoArgsConstructor
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+@AllArgsConstructor(onConstructor_ = { @Autowired })
 @Controller
 @RequestMapping("/waiter")
 public class WaiterController {
@@ -51,90 +49,66 @@ public class WaiterController {
 	RoomService roomService;
 	OrderService orderService;
 	RequestService requestService;
-	
+
 	OrderDTOValidator orderDTOValidator;
-    /**
-     * Method to access waiter page. Handles GET request for URL "/waiter"
-     * @param model instance of {@link Model}
-     * @param page number of requested page for orders table
-     * @param size size of requested page
-     * @param pageUser number of requested page for users table
-     * @return view "/waiter/waiter_page"
-     */
-    @GetMapping
-    public String waiterPage(Model model,
-                                @RequestParam(required = false, defaultValue = "1") Integer page,
-                                @RequestParam(required = false, defaultValue = "1") Integer pageRoom,
-                                @RequestParam(required = false, defaultValue = "5") Integer size) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String login = ((UserDetails) principal).getUsername();
-        model.addAttribute("userDTO", userService.findUserByLogin(login));
-        Page<Room> freeRoomsPage = roomService.findAllFreeRoomsPaginated(pageRoom-1, size);
-        model.addAttribute("roomsCurrentPage", freeRoomsPage);
-        model.addAttribute("roomsPageNumbers", Pagination.buildPageNumbers(freeRoomsPage.getTotalPages()));
-        
-        Page<Request> currentPage = requestService.findNewUnhandledRequestsPageable(page - 1, size);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("pageNumbers", Pagination.buildPageNumbers(currentPage.getTotalPages()));
-        
 
-        
-        return Path.WAITER_PAGE;
-    }
-    
-    /**
-     * Method to access {@link Order} edit page. Handles GET request for URL "/waiter/orders/edit/{id}".
-     * @param id {@link Order} id
-     * @param model instance of {@link Model}
-     * @return view "/waiter/edit_order"
-     */
-    @GetMapping("/orders/edit/{id}")
-    public String proceedRequestForm(@PathVariable Long id, Model model) {
-    	Request request = requestService.findRequestById(id);
-        model.addAttribute(DTOHelper.toDTO(request));
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setCheckInDate(request.getCheckInDate());
-        orderDTO.setCheckOutDate(request.getCheckOutDate());
-        orderDTO.setUser(userService.findUserById(request.getUser().getId()));
-        model.addAttribute(orderDTO);
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        long userId = ((AppUserDetails) principal).getId();
-        String message = String.format("Waiter id %s going to proceed request id %s", userId, id);
-        logger.info(message);
+	@GetMapping
+	public String waiterPage(Model model, @RequestParam(required = false, defaultValue = "1") Integer page,
+			@RequestParam(required = false, defaultValue = "1") Integer pageRoom,
+			@RequestParam(required = false, defaultValue = "5") Integer size) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String login = ((UserDetails) principal).getUsername();
+		model.addAttribute("userDTO", userService.findUserByLogin(login));
+		Page<Room> freeRoomsPage = roomService.findAllFreeRoomsPaginated(pageRoom - 1, size);
+		model.addAttribute("roomsCurrentPage", freeRoomsPage);
+		model.addAttribute("roomsPageNumbers", Pagination.buildPageNumbers(freeRoomsPage.getTotalPages()));
 
-        return Path.WAITER_ORDER_EDIT_PAGE;
-    }
-    
-    /**
-     * Method to update {@link Order} by id.  Handles POST request for URL "/waiter/rooms/{id}".
-     * If orderDTO valid  - than redirects to "redirect:/waiter/waiter_page", otherwise - forwards to "/waiter/edit_order".
-     * @param id - {@link Order} id
-     * @param orderDTO model attribute {@link OrderDTO} for entity {@link Order}
-     * @param errors instance of {@link BindingResult}
-     * @param model instance of {@link Model}
-     * @return view
-     */
-    @PostMapping("/orders/{id}")
-    public String proceedRequest(@PathVariable Long id, @ModelAttribute OrderDTO orderDTO, BindingResult errors, @ModelAttribute RequestDTO requestDTO,  Model model) {
-    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        long userId = ((AppUserDetails) principal).getId();
-    	orderDTO.setOrderDate(LocalDateTime.now());
-    	orderDTO.setOrderStatus(new OrderStatus());
-    	orderDTO.getOrderStatus().setId(2);
-    	orderDTOValidator.validate(orderDTO, errors);
-         if (errors.hasErrors()) {
-             model.addAttribute(orderDTO);
-             String message = String.format("Waiter id %s failed to update order %s", userId, id);
-             logger.info(message);
-             return Path.WAITER_ORDER_EDIT_PAGE;
-         }
-        orderService.updateOrder(id, orderDTO);
-        requestService.deleteRequest(id);
-        
-        String message = String.format("Waiter id %s updated order id %s", userId, id);
-        logger.info(message);
+		Page<Request> currentPage = requestService.findAllRequestsPageable(page - 1, size);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("pageNumbers", Pagination.buildPageNumbers(currentPage.getTotalPages()));
 
-        return Path.WAITER_PAGE_REDIRECT;
-    }
-    
+		return Path.WAITER_PAGE;
+	}
+
+	@GetMapping("/orders/edit/{id}")
+	public String proceedRequestForm(@PathVariable Long id, Model model) {
+		Request request = requestService.findRequestById(id);
+		model.addAttribute(DTOHelper.toDTO(request));
+		OrderDTO orderDTO = new OrderDTO();
+		orderDTO.setCheckInDate(request.getCheckInDate());
+		orderDTO.setCheckOutDate(request.getCheckOutDate());
+		orderDTO.setUser(userService.findUserById(request.getUser().getId()));
+		model.addAttribute(orderDTO);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		long userId = ((AppUserDetails) principal).getId();
+		String message = String.format("Waiter id %s going to proceed request id %s", userId, id);
+		logger.info(message);
+
+		return Path.WAITER_ORDER_EDIT_PAGE;
+	}
+
+	@PostMapping("/orders/{id}")
+	public String proceedRequest(@PathVariable Long id, @ModelAttribute OrderDTO orderDTO, BindingResult errors,
+			@ModelAttribute RequestDTO requestDTO, Model model) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		long userId = ((AppUserDetails) principal).getId();
+		orderDTO.setOrderDate(LocalDateTime.now());
+		orderDTO.setOrderStatus(new OrderStatus());
+		orderDTO.getOrderStatus().setId(2);
+		orderDTOValidator.validate(orderDTO, errors);
+		if (errors.hasErrors()) {
+			model.addAttribute(orderDTO);
+			String message = String.format("Waiter id %s failed to update order %s", userId, id);
+			logger.info(message);
+			return Path.WAITER_ORDER_EDIT_PAGE;
+		}
+		orderService.updateOrder(id, orderDTO);
+		requestService.deleteRequest(id);
+
+		String message = String.format("Waiter id %s updated order id %s", userId, id);
+		logger.info(message);
+
+		return Path.WAITER_PAGE_REDIRECT;
+	}
+
 }

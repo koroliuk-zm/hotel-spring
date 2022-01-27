@@ -15,12 +15,12 @@ import com.dkoroliuk.hotel_spring.repository.UserRepo;
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 	@Autowired
-    private UserRepo userRepo;
+	private UserRepo userRepo;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepo.findUserByLogin(username);
-        return user.map(AppUserDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException("No such user as " + username));
-    }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> user = userRepo.findUserByLogin(username);
+		return user.map(AppUserDetails::new)
+				.orElseThrow(() -> new UsernameNotFoundException("No such user as " + username));
+	}
 }

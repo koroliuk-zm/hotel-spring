@@ -17,51 +17,48 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-
 /**
- * Defines strategy used to handle a successful user authentication in such way that
- * users with role "ADMIN" moves to URL "/admin",
- * "WAITER" - "/waiter", "USER" - "/user/rooms".
+ * Defines strategy used to handle a successful user authentication in such way
+ * that users with role "ADMIN" moves to URL "/admin", "WAITER" - "/waiter",
+ * "USER" - "/user/rooms".
  */
 public class AppAuthentificationSuccessHandler implements AuthenticationSuccessHandler {
-    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-    
+	private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 		handle(request, response, authentication);
-        clearAuthenticationAttributes(request);
+		clearAuthenticationAttributes(request);
 	}
-	
-    private void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        String targetUrl = determineTargetUrl(authentication);
-        redirectStrategy.sendRedirect(request, response, targetUrl);
-    }
 
+	private void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+			throws IOException {
+		String targetUrl = determineTargetUrl(authentication);
+		redirectStrategy.sendRedirect(request, response, targetUrl);
+	}
 
-    protected String determineTargetUrl(final Authentication authentication) {
-        Map<String, String> roleTargetUrl = new HashMap<>();
-        roleTargetUrl.put("ROLE_USER", "/user/rooms");
-        roleTargetUrl.put("ROLE_ADMIN", "/admin");
-        roleTargetUrl.put("ROLE_WAITER", "/waiter");
-        final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        for (final GrantedAuthority grantedAuthority : authorities) {
-            String authorityName = grantedAuthority.getAuthority();
-            if(roleTargetUrl.containsKey(authorityName)) {
-                return roleTargetUrl.get(authorityName);
-            }
-        }
-        throw new IllegalStateException();
-    }
+	protected String determineTargetUrl(final Authentication authentication) {
+		Map<String, String> roleTargetUrl = new HashMap<>();
+		roleTargetUrl.put("ROLE_USER", "/user/rooms");
+		roleTargetUrl.put("ROLE_ADMIN", "/admin");
+		roleTargetUrl.put("ROLE_WAITER", "/waiter");
+		final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		for (final GrantedAuthority grantedAuthority : authorities) {
+			String authorityName = grantedAuthority.getAuthority();
+			if (roleTargetUrl.containsKey(authorityName)) {
+				return roleTargetUrl.get(authorityName);
+			}
+		}
+		throw new IllegalStateException();
+	}
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return;
-        }
-        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-    }
-
+	protected void clearAuthenticationAttributes(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return;
+		}
+		session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+	}
 
 }
-

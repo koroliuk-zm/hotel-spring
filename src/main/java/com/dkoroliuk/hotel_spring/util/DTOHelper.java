@@ -121,7 +121,6 @@ public class DTOHelper {
     			.seatsNumber(requsest.getSeatsNumber())
     			.user(requsest.getUser())
     			.roomType(requsest.getRoomType())
-    			.isProceed(requsest.isProceed())
     			.build();
     }
     

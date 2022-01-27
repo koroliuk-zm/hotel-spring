@@ -29,78 +29,69 @@ import com.dkoroliuk.hotel_spring.service.UserService;
 import com.dkoroliuk.hotel_spring.util.Path;
 import com.dkoroliuk.hotel_spring.validators.UserDTOValidator;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class MainControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	@Autowired
-    private WebApplicationContext webApplicationContext;
+	private WebApplicationContext webApplicationContext;
 	@MockBean
-    private UserService userService;
-	@MockBean 
+	private UserService userService;
+	@MockBean
 	RoomService roomService;
-	@MockBean 
+	@MockBean
 	UserDTOValidator userDTOValidator;
 	private static PageImpl<Room> rooms;
-    
-    @Test
-    void indexPageShouldReturnIndexPage() throws Exception {
-        Room room = new Room();
-        room.setId(1L);
-        room.setNumber(1);
-        room.setSeatsAmount(1);
-        room.setPerdayCost(100);
-        room.setRoomStatus(new RoomStatus(1, "free"));
-        room.setRoomType(new RoomType(1, "standart"));
-        room.setDescription("room number1");
-        List<Room> roomList = new ArrayList<>();
-        roomList.add(room);
-        room = new Room();
-        room.setId(2L);
-        room.setNumber(2);
-        room.setSeatsAmount(2);
-        room.setPerdayCost(150);
-        room.setRoomStatus(new RoomStatus(1, "free"));
-        room.setRoomType(new RoomType(1, "standart"));
-        room.setDescription("room number2");
-        roomList.add(room);
-        rooms = new PageImpl<>(roomList);
-        when(roomService.findAllFreeRoomsPaginated(any())).thenReturn(rooms);
-        this.mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(view().name(Path.WELCOME_PAGE))
-                .andExpect(model().attribute("roomPage", rooms));
-    }
-    
-    @Test
-    void loginPageShouldReturnLoginPage () throws Exception {
-        this.mockMvc.perform(get("/login"))
-                .andExpect(status().isOk())
-                .andExpect(view().name(Path.LOGIN_PAGE));
-    }
-    
-    @Test
-    void registrationPageShouldReturnRegistrationPage() throws Exception {
-        this.mockMvc.perform(get("/registration"))
-                .andExpect(status().isOk())
-                .andExpect(view().name(Path.REGISTRATION_PAGE));
-    }
-    
-    @Test
-    void registerNewUserWhenUserValidAndNotExistShouldRedirectToLoginPage() throws Exception {
-    	mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        this.mockMvc.perform(post("/registration"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/login"));
-    }
-    
-    @Test
-    void testUserLoginWithBadCredentials() throws Exception {
-        this.mockMvc.perform(post("/login").param("login", "user"))
-                .andExpect(status().is4xxClientError());
-    }
-    
-    
+
+	@Test
+	void indexPageShouldReturnIndexPage() throws Exception {
+		Room room = new Room();
+		room.setId(1L);
+		room.setNumber(1);
+		room.setSeatsAmount(1);
+		room.setPerdayCost(100);
+		room.setRoomStatus(new RoomStatus(1, "free"));
+		room.setRoomType(new RoomType(1, "standart"));
+		room.setDescription("room number1");
+		List<Room> roomList = new ArrayList<>();
+		roomList.add(room);
+		room = new Room();
+		room.setId(2L);
+		room.setNumber(2);
+		room.setSeatsAmount(2);
+		room.setPerdayCost(150);
+		room.setRoomStatus(new RoomStatus(1, "free"));
+		room.setRoomType(new RoomType(1, "standart"));
+		room.setDescription("room number2");
+		roomList.add(room);
+		rooms = new PageImpl<>(roomList);
+		when(roomService.findAllFreeRoomsPaginated(any())).thenReturn(rooms);
+		this.mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name(Path.WELCOME_PAGE))
+				.andExpect(model().attribute("roomPage", rooms));
+	}
+
+	@Test
+	void loginPageShouldReturnLoginPage() throws Exception {
+		this.mockMvc.perform(get("/login")).andExpect(status().isOk()).andExpect(view().name(Path.LOGIN_PAGE));
+	}
+
+	@Test
+	void registrationPageShouldReturnRegistrationPage() throws Exception {
+		this.mockMvc.perform(get("/registration")).andExpect(status().isOk())
+				.andExpect(view().name(Path.REGISTRATION_PAGE));
+	}
+
+	@Test
+	void registerNewUserWhenUserValidAndNotExistShouldRedirectToLoginPage() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(post("/registration")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/login"));
+	}
+
+	@Test
+	void testUserLoginWithBadCredentials() throws Exception {
+		this.mockMvc.perform(post("/login").param("login", "user")).andExpect(status().is4xxClientError());
+	}
+
 }
